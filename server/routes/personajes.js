@@ -6,7 +6,7 @@ const Race = require("./../models/raza");
 
 app.get("/personaje", (req, res) => {
     Personaje.find()
-        .populate("race", "name skills")
+        .populate('race', 'name skills')
         .then((r) => {
             if (!r)
                 return res.status(400).json({

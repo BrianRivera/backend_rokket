@@ -122,6 +122,15 @@ app.delete('/habilidades/:id/:skill', async(req, res) => {
         });
     }
 });
+
+app.get('*', async(req, res) => {
+    res.status(404).json({
+        ok: false,
+        err: {
+            message: 'Ruta no encontrada'
+        }
+    })
+});
 //------------------------------------------------
 
 const saveHabilities = (id, skill, res) => {

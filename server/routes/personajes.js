@@ -123,6 +123,30 @@ app.delete('/habilidades/:id/:skill', async(req, res) => {
     }
 });
 
+// app.post('/raza', async(req, res) => {
+//     let race = new Race({
+//         ...req.body
+//     });
+//     let raceEntry = await race.save();
+//     res.json(raceEntry);
+// });
+
+app.get('/raza', async(req, res) => {
+
+    Race.find().then(r => {
+        res.json({
+            ok: false,
+            race: r
+        })
+    }).catch(err => {
+        return res.status(500).json({
+            ok: false,
+            err
+        });
+    })
+});
+
+
 app.get('*', async(req, res) => {
     res.status(404).json({
         ok: false,
@@ -155,12 +179,6 @@ const saveHabilities = (id, skill, res) => {
         });
 };
 
-// app.post('/raza', async(req, res) => {
-//     let race = new Race({
-//         ...req.body
-//     });
-//     let raceEntry = await race.save();
-//     res.json(raceEntry);
-// });
+
 
 module.exports = app;

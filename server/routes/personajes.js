@@ -29,7 +29,7 @@ app.get("/personaje", (req, res) => {
 
 app.post("/personaje", (req, res) => {
     let data = _.pick(req.body, ["name", "race", "skills", "image"]);
-    // data.habilidades = (data.habilidades) ? JSON.parse(data.habilidades) : [];
+    data.habilidades = (data.skills) ? JSON.parse(data.habilidades) : [];
     let personaje = new Personaje(data);
 
     personaje

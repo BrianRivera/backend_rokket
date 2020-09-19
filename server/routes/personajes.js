@@ -135,7 +135,7 @@ app.get('/raza', async(req, res) => {
 
     Race.find().then(r => {
         res.json({
-            ok: false,
+            ok: true,
             race: r
         })
     }).catch(err => {

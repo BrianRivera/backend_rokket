@@ -34,13 +34,13 @@ app.post("/personaje", (req, res) => {
 
     personaje
         .save()
-        .then((r) => {
-            if (!r)
-                return res.status(400).json({
-                    ok: false,
-                    err: { message: "personajes no ingresado" },
-                });
+        .then(async(r) => {
+            if (!r) return res.status(400).json({
+                ok: false,
+                err: { message: "personajes no ingresado" },
+            });
 
+            r.race = await Race.findOne({ _id: r.race });
             res.json({
                 ok: true,
                 personajes: r,

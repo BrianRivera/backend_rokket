@@ -10,6 +10,8 @@ app.use(cors())
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(require('./server/routes/upload.js'));
+app.use(require('./server/routes/imagenes.js'));
 app.use(require('./server/routes/personajes.js'));
 
 let conexion = async() => await mongoose.connect(process.env.MONGO_URI, {

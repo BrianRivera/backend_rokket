@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 const _ = require("underscore");
+const fs = require('fs');
+const path = require('path');
+
 const Personaje = require("./../models/personajes");
 const Race = require("./../models/raza");
 
@@ -57,7 +60,7 @@ app.post("/personaje", (req, res) => {
 app.delete("/personaje/:id", (req, res) => {
     let id = req.params.id;
 
-    Personaje.deleteOne({ _id: id })
+    Personaje.findOneAndDelete({ _id: id })
         .then((r) => {
             if (!r)
                 return res.status(400).json({
@@ -65,6 +68,7 @@ app.delete("/personaje/:id", (req, res) => {
                     err: { message: "personajes no encontrado" },
                 });
 
+            borra_archivo(r.image);
             res.json({
                 ok: true,
                 personajes: r,
@@ -179,6 +183,11 @@ const saveHabilities = (id, skill, res) => {
         });
 };
 
-
+const borra_archivo = (nombreImagen) => {
+    let pathImagen = path.resolve(__dirname, `../../uploads/${nombreImagen}`);
+    if (fs.existsSync(pathImagen)) {
+        fs.unlinkSync(pathImagen);
+    }
+}
 
 module.exports = app;

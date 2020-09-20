@@ -5,7 +5,6 @@ const path = require('path');
 
 app.get('/imagen/:img', (req, res) => {
     let img = req.params.img;
-
     let pathImagen = path.resolve(__dirname, `../../uploads/${img}`);
 
     if (fs.existsSync(pathImagen)) {

@@ -3,6 +3,7 @@ let app = express();
 const fs = require('fs');
 const path = require('path');
 
+//carga de imagenes
 app.get('/imagen/:img', (req, res) => {
     let img = req.params.img;
     let pathImagen = path.resolve(__dirname, `../../uploads/${img}`);

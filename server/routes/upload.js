@@ -2,13 +2,12 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const app = express();
 const Personaje = require('../models/personajes');
-//default option
 app.use(fileUpload());
-
+//imgreso de imagenes
 app.put('/upload/:id', (req, res) => {
 
     let id = req.params.id;
-
+    //valida si existe archivo
     if (!req.files) {
         return res.status(400).json({
             ok: false,
@@ -17,7 +16,7 @@ app.put('/upload/:id', (req, res) => {
             }
         });
     }
-
+    //separa nombre y extencion
     let archivo = req.files.archivo;
     let nombreArchivo = archivo.name.split('.');
     let extencion = nombreArchivo[nombreArchivo.length - 1];
@@ -50,7 +49,7 @@ app.put('/upload/:id', (req, res) => {
         imagenPersonaje(id, res, nombreArchivoFinal)
     });
 });
-
+//actualiza el personaje con su imagen
 const imagenPersonaje = async(id, res, nombreArchivoFinal) => {
     Personaje.updateOne({ _id: id }, { image: nombreArchivoFinal })
         .then((r) => {

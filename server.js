@@ -24,3 +24,5 @@ conexion();
 app.listen(process.env.PORT, () => {
     console.log('ESCUCHANDO EL PUERTO: ', process.env.PORT);
 });
+
+module.exports = app;

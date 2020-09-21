@@ -7,6 +7,8 @@ const path = require('path');
 const Personaje = require("./../models/personajes");
 const Race = require("./../models/raza");
 
+
+//peticion de llamada de personajes
 app.get("/personaje", (req, res) => {
     Personaje.find()
         .populate('race', 'name skills')
@@ -30,6 +32,7 @@ app.get("/personaje", (req, res) => {
         });
 });
 
+//peticion de ingreso de personajes
 app.post("/personaje", (req, res) => {
     let data = _.pick(req.body, ["name", "race", "skills", "image"]);
     data.skills = (data.skills) ? JSON.parse(data.skills) : [];
@@ -57,6 +60,8 @@ app.post("/personaje", (req, res) => {
         });
 });
 
+//peticion de eliminacion de personajes
+
 app.delete("/personaje/:id", (req, res) => {
     let id = req.params.id;
 
@@ -82,59 +87,8 @@ app.delete("/personaje/:id", (req, res) => {
         });
 });
 
-//------------------------------------------------
 
-app.put('/habilidades/:id', async(req, res) => {
-    try {
-
-        let id = req.params.id;
-        let newSkills = {...req.body };
-
-        let { skills } = await Personaje.findOne({ _id: id });
-
-        (!(skills.find((s) => s.name == newSkills.name))) && skills.push(newSkills);
-
-        saveHabilities(id, skills, res);
-
-    } catch (err) {
-        res.status(500).json({
-            ok: false,
-            err
-        });
-    }
-});
-
-app.delete('/habilidades/:id/:skill', async(req, res) => {
-    try {
-
-        let id = req.params.id;
-        let skillDeleted = req.params.skill;
-
-        let { skills } = await Personaje.findOne({ _id: id });
-
-        if (skills.length == 0) return res.status(400).json({
-            ok: false,
-            err: { message: 'No hay habilidades ingresadas' }
-        });
-
-        skills = skills.filter((r) => (r.name != skillDeleted));
-        saveHabilities(id, skills, res);
-    } catch (err) {
-        return res.status(500).json({
-            ok: false,
-            err
-        });
-    }
-});
-
-// app.post('/raza', async(req, res) => {
-//     let race = new Race({
-//         ...req.body
-//     });
-//     let raceEntry = await race.save();
-//     res.json(raceEntry);
-// });
-
+//llamado de razas
 app.get('/raza', async(req, res) => {
 
     Race.find().then(r => {
@@ -150,7 +104,7 @@ app.get('/raza', async(req, res) => {
     })
 });
 
-
+//peticion 404/rutas que no existen
 app.get('*', async(req, res) => {
     res.status(404).json({
         ok: false,
@@ -161,28 +115,8 @@ app.get('*', async(req, res) => {
 });
 //------------------------------------------------
 
-const saveHabilities = (id, skill, res) => {
 
-    Personaje.updateOne({ _id: id }, { skills: skill })
-        .then((r) => {
-            if (!r)
-                return res.status(400).json({
-                    ok: false,
-                    err: { message: "personaje no encontrados" },
-                });
-            res.json({
-                ok: true,
-                personaje: r,
-            });
-        })
-        .catch((err) => {
-            res.status(500).json({
-                ok: false,
-                err,
-            });
-        });
-};
-
+//funcion para eliminar imagenes ligadas a personajes, se llama en la eliminacion del personaje
 const borra_archivo = (nombreImagen) => {
     let pathImagen = path.resolve(__dirname, `../../uploads/${nombreImagen}`);
     if (fs.existsSync(pathImagen)) {

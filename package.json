@@ -4,8 +4,15 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest",
+        "test:watch": "jest --watch",
         "start": "node server"
+    },
+    "jest": {
+        "testEnvironment": "node",
+        "coveragePathIgnorePatterns": [
+            "/node_modules/"
+        ]
     },
     "author": "",
     "license": "ISC",
@@ -15,5 +22,9 @@
         "express-fileupload": "^1.2.0",
         "mongoose": "^5.10.5",
         "underscore": "^1.11.0"
+    },
+    "devDependencies": {
+        "jest": "^26.4.2",
+        "supertest": "^4.0.2"
     }
 }
